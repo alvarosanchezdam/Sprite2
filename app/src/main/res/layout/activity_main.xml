@@ -57,4 +57,13 @@
         android:layout_below="@+id/perdido"
         android:text="Reiniciar"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/puntuacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pausa"
+        android:layout_centerHorizontal="true"
+        android:text="0"
+        android:textSize="30sp" />
 </RelativeLayout>

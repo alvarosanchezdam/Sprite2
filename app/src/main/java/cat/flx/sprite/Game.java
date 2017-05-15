@@ -16,10 +16,15 @@ class Game {
     private Bonk bonk;
     private Audio audio;
     private boolean die = false;
+    private MainActivity act;
     private Box box;
     private Box box2;
     private Box box3;
+    private int puntuacion;
     private Box box4;
+    private Box box5;
+    private Box box6;
+    private Box box7;
     private List<Coin> coins;
     private List<Enemy> enemyList;
     private List<Box> boxes;
@@ -27,6 +32,7 @@ class Game {
     private boolean derecha=false;
     Game(Activity activity) {
         this.context = activity;
+        act = (MainActivity) activity;
         bitmapSet = new BitmapSet(context.getResources());
         audio = new Audio(activity);
         scene = new Scene(this);
@@ -48,8 +54,27 @@ class Game {
         box3.y=-150;
         box4=new Box(this);
         box4.x=1 * 10;
-        box4.y=+130;
+        box4.y=+120;
+        box5=new Box(this);
+        box5.x=1 * 10;
+        box5.y=+180;
+        box6=new Box(this);
+        box6.x=1 * 10;
+        box6.y=+200;
+        box7=new Box(this);
+        box7.x=1 * 10;
+        box7.y=+210;
         boxes = new ArrayList<>();
+        boxes.add(box);boxes.add(box2);boxes.add(box3);boxes.add(box4);boxes.add(box5);boxes.add(box6);boxes.add(box7);
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = this.puntuacion+puntuacion;
+        act.puntuacion.setText(this.puntuacion+"");
     }
 
     public boolean isMuerto() {
@@ -82,10 +107,9 @@ class Game {
 
     void physics() {
         bonk.physics();
-        box.physics();
-        box2.physics();
-        box3.physics();
-        box4.physics();
+        for(Box b : boxes){
+            b.physics();
+        }
         for(Coin coin : coins) {
             coin.physics();
         }

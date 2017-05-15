@@ -1,5 +1,6 @@
 package cat.flx.sprite;
 
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
     Button pause;
     Game game;
+    TextView puntuacion;
+    public int punt;
     ImageView iv;
     public TextView tv;
     @Override
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         final GameView gameView = (GameView) findViewById(R.id.view);
         game = new Game(this);
         gameView.setGame(game);
+        puntuacion = (TextView) findViewById(R.id.puntuacion);
         tv = (TextView) findViewById(R.id.perdido);
         pause = (Button) findViewById(R.id.pausa);
         iv = (ImageView) findViewById(R.id.imageView);
