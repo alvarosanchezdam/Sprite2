@@ -4,14 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class Game {
     private Context context;
-    private boolean muerto;
     private BitmapSet bitmapSet;
+    private GameView gameView;
     private Scene scene;
     private Bonk bonk;
     private Audio audio;
@@ -30,8 +31,9 @@ class Game {
     private List<Box> boxes;
     private int screenOffsetX, screenOffsetY;
     private boolean derecha=false;
-    Game(Activity activity) {
+    Game(Activity activity, GameView gameView) {
         this.context = activity;
+        this.gameView = gameView;
         act = (MainActivity) activity;
         bitmapSet = new BitmapSet(context.getResources());
         audio = new Audio(activity);
@@ -42,7 +44,6 @@ class Game {
         scene.loadFromFile(R.raw.mini);
         bonk.x = 16 * 10;
         bonk.y = 0;
-        muerto = false;
         box=new Box(this);
         box.x=10 * 10;
         box.y=0;
@@ -77,12 +78,12 @@ class Game {
         act.puntuacion.setText(this.puntuacion+"");
     }
 
-    public boolean isMuerto() {
-        return muerto;
+    public boolean isDie() {
+        return die;
     }
 
-    public void setMuerto(boolean muerto) {
-        this.muerto = muerto;
+    public void setDie(boolean die) {
+        this.die = die;
     }
 
     Context getContext() { return context; }
@@ -109,6 +110,17 @@ class Game {
         bonk.physics();
         for(Box b : boxes){
             b.physics();
+            if (!die&&b.getCollisionRect().intersect(bonk.getCollisionRect())) {
+                audio.die();
+                die = true;
+                act.reiniciar.setVisibility(View.VISIBLE);
+                for(Box box : boxes){
+                    box.stop();
+                }
+                for(Enemy enemy:enemyList) {
+                    enemy.stop();
+                }
+            }
         }
         for(Coin coin : coins) {
             coin.physics();
@@ -119,11 +131,15 @@ class Game {
                 audio.die();
                 die = true;
                 enemy.stop();
+                act.reiniciar.setVisibility(View.VISIBLE);
                 enemy.setStates(new int[][]{
                         {20}, // 0: standing by
                         {20},  // 1: walking left
                         {20},  // 2: walking right
                 });
+                for(Box box : boxes){
+                    box.stop();
+                }
             }
         }
     }

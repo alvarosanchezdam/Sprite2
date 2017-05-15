@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public int punt;
     ImageView iv;
     public TextView tv;
+    public Button reiniciar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,25 +27,44 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         setContentView(R.layout.activity_main);
+        reiniciar = (Button) findViewById(R.id.reset);
+        reiniciar.setVisibility(View.GONE);
+        //reiniciar.setVisibility(View.GONE);
         final GameView gameView = (GameView) findViewById(R.id.view);
-        game = new Game(this);
+        game = new Game(this, gameView);
         gameView.setGame(game);
         puntuacion = (TextView) findViewById(R.id.puntuacion);
         tv = (TextView) findViewById(R.id.perdido);
         pause = (Button) findViewById(R.id.pausa);
         iv = (ImageView) findViewById(R.id.imageView);
         iv.setVisibility(View.GONE);
+
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(gameView.isPausa()){gameView.setPausa(false);
-                    iv.setVisibility(View.GONE);
-                }
-                else {gameView.setPausa(true);
-                    iv.setVisibility(View.VISIBLE);
+                if (!game.isDie()) {
+                    if (gameView.isPausa()) {
+                        gameView.setPausa(false);
+                        iv.setVisibility(View.GONE);
+                    } else {
+                        gameView.setPausa(true);
+                        iv.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });
+
+        reiniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final GameView gameView = (GameView) findViewById(R.id.view);
+
+                game = new Game(MainActivity.this, gameView);
+                gameView.setGame(game);
+                reiniciar.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     @Override public void onResume() {

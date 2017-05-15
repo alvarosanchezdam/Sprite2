@@ -10,6 +10,7 @@ import android.view.View;
 class GameView extends View {
     MainActivity ma = new MainActivity();
     Game game;
+    private boolean muerto;
     public boolean pausa;
     public GameView(Context context) { this(context, null, 0);
     pausa=false;
@@ -18,6 +19,14 @@ class GameView extends View {
     public GameView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         pausa=false;
+    }
+
+    public boolean isMuerto() {
+        return muerto;
+    }
+
+    public void setMuerto(boolean muerto) {
+        this.muerto = muerto;
     }
 
     public boolean isPausa() {
@@ -39,10 +48,10 @@ class GameView extends View {
     @Override public void onDraw(Canvas canvas) {
         this.postInvalidateDelayed(50);
         if (game == null) return;
-        if(!isPausa()&&!game.isMuerto()) {
+        if(!isPausa()&&!game.isDie()) {
             game.events();
             game.physics();
-        }else if(game.isMuerto()){
+        }else if(game.isDie()){
             game.getBonk().setStates(new int[][]{
                     {51}, // 0: standing by
                     {51},  // 1: walking left

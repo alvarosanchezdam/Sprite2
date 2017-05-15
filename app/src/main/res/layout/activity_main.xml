@@ -66,4 +66,12 @@
         android:layout_centerHorizontal="true"
         android:text="0"
         android:textSize="30sp" />
+
+    <Button
+        android:id="@+id/reset"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Reiniciar" />
 </RelativeLayout>
